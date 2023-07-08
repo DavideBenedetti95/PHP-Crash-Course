@@ -4,7 +4,7 @@ Repository dedicata ad un ripasso general di PHP.
 Link al video su youtube: 
 
 
-#Cosa Troverai all'interno di questa repository
+## Cosa Troverai all'interno di questa repository
 
 Il progetto e' suddiviso per categoria d'argomenti, qui sotto la lista degli argomenti.Il codice e' interamente commentato.
 
