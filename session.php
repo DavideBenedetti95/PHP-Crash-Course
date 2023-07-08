@@ -1,57 +1,48 @@
 <?php
-/* --- Sanitizing Inputs -- */
+/* ------------ Sessions ------------ */
 
 /*
-  Data submitted through a form is not sanitized by default. We have methods to sanitize data manually.
+  Sessions are a way to store information (in variables) to be used across multiple pages.
+  Unlike cookies, sessions are stored on the server.
 */
 
-session_start();
+session_start(); // Must be called before accessing any session data
 
 if (isset($_POST['submit'])) {
-  // $name = $_POST['email'];
-  // $email = $_POST['email'];
+  $username = filter_input(
+    INPUT_POST,
+    'username',
+    FILTER_SANITIZE_FULL_SPECIAL_CHARS
+  );
+  $password = filter_input(
+    INPUT_POST,
+    'password',
+    FILTER_SANITIZE_FULL_SPECIAL_CHARS
+  );
 
-  // htmlspecialchars() - Convert special characters to HTML entities
-  // $name = htmlspecialchars($_POST['name']);
-  // $email = htmlspecialchars($_POST['email']);
-
-  // filter_var() - Sanitize data
-  // $name = filter_var($_POST['name'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-  // $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
-
-  // filter_input() - Sanitize inputs
-  $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-  $password = $_POST["password"];
-
-  if($username==="john" && $password === "password"){
-    $_SESSION["username"] = $username;
-    header("Location: /PHP_CRASH/extras/dashboard.php");
-  }else{
-    echo "Incorrect Login";
+  if ($username == 'brad' && $password == 'password') {
+    // Set Session variable
+    $_SESSION['username'] = $username;
+    // Redirect user to another page
+    header('Location: /php-crash/extras/dashboard.php');
+  } else {
+    echo 'Incorrect username or password';
   }
+}
+?>
 
-  // FILTER_SANITIZE_STRING - Convert string to string with only alphanumeric, whitespace, and the following characters - _.:/
-  // FILTER_SANITIZE_EMAIL - Convert string to a valid email address
-  // FILTER_SANITIZE_URL - Convert string to a valid URL
-  // FILTER_SANITIZE_NUMBER_INT - Convert string to an integer
-  // FILTER_SANITIZE_NUMBER_FLOAT - Convert string to a float
-  // FILTER_SANITIZE_FULL_SPECIAL_CHARS - HTML-encodes special characters, keeps spaces and most other characters
-} ?>
-
-<!-- Pass data through a form -->
-<!-- php_self can be used for xss -->
-<form action="<?php echo htmlspecialchars(
-  $_SERVER['PHP_SELF']
-); ?>" method="POST">
-<div>
-  <label>Username: </label>
-  <input type="text" name="username">
-</div>
-<div>
-<label>Password: </label>
-  <input type="password" name="password">
-</div>
-<br>
-  <input type="submit" name="submit" value="Submit">
-  <?php echo "<a href='/PHP_CRASH/extras/dashboard.php'>Dashboard</a>"?>
-</form>
+  <form action="<?php echo htmlspecialchars(
+    $_SERVER['PHP_SELF']
+  ); ?>" method="POST">
+    <div>
+      <label>Username: </label>
+      <input type="text" name="username">
+    </div>
+    <br>
+    <div>
+      <label>Password: </label>
+      <input type="password" name="password">
+    </div>
+    <br>
+    <input type="submit" name="submit" value="Submit">
+  </form>
